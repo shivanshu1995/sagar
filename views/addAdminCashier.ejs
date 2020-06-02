@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src='/js/addAdminCashier.js'></script>
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+        <% if(error != "") { %>
+            <script>
+            window.alert("Data saving error");
+            </script>
+        <% } %>
+    </head>
+    <body>
+        <div id='addAdminCashierDiv'>
+            <form action='/saveAddAdminCashierData' method='POST'>
+                <p>Note : You can only add an Admin or a Cashier here</p>
+                <!-- <br> -->
+                <p>To add a customer Please visit your Cashier Page</p>
+                <div id="basicDetails">
+                    <input id="name" name="name"class="form-control" placeholder="Admin/Cashier Name"  autofocus="">
+                    <input id="contactNumber" name="contactNumber" class="form-control" placeholder="Contact Number" autofocus="">
+                    <select id="priviledge" name="priviledge">
+                        <option value="Admin">Admin</option>
+                        <option value="Cashier" selected>Cashier</option>
+                    </select>
+                    <input id="email" name="email" placeholder="Email" autofocus="">
+                    <input id="password" name="password" placeholder="Password" autofocus="">
+                    <textarea id="address" name="address" placeholder="Address" autofocus="" rows="5" cols="10"></textarea>
+                </div>
+                <div id='serviceDetails'>
+                    <button id='addCategory' name="Add Category Button">Add a Category</button>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </body>
+</html>

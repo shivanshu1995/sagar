@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+        <link href="/css/generateBill.css" rel="stylesheet">
+        <script src="/js/generateBill.js"></script>
+    </head>
+
+    <body>
+        <div id="loadingContainer"class="container">
+            <div class="row text-center">
+                <div class = "centered">
+                    <div class = "blob-1"></div>
+                    <div class = "blob-2"></div>
+                </div>
+            </div>
+        </div>
+        <div id="bodyContainer" style="display: none">
+            <%- include('header.html') %>
+            <div id="error" class="alert" style="background-color: red;text-align: center;display: none;"></div>
+            <div id="getCustomerName"  class="col-sm text-primary h1" style="text-align : center;margin : auto ;padding:10px;padding-top: 30px;width:50%;border: 100px solid ;border-top: 5px;border-bottom: 5px;">
+                <input class="form-control form-control-lg mr-sm-2" type="number" id="customerNumber" name="customerNumber" placeholder="Enter Customer Number" style="text-align : center;display : inline-block;margin : auto;padding:60px;width:100%;border: 5px solid ;margin-left: auto;
+                margin-right: auto;">
+                <button id="getCustomerNameButton" class="btn btn-primary">Get Name</button>
+                <button id="cancel" class="btn btn-primary">Cancel</button>
+            </div>
+
+            <div id="serviceDetails">
+                <p id="customerName" class="form-control form-control-plaintext form-control-lg mr-sm-2" style="text-align : center;display : inline-block;margin : auto;padding:40px;width:100%;margin-left: auto;
+                margin-right: auto;"></p>
+                <p id="customerName"></p>
+                <form id="theForm">
+                </form>
+            </div>
+        </div>
+    </body>
+
+</html>

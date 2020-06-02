@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+        <link href="/css/addCustomer.css" rel="stylesheet">
+        <script src="/js/addCustomer.js"></script>
+    </head>
+    <body>
+        <div id="loadingContainer"class="container">
+            <div class="row text-center">
+                <div class = "centered">
+                    <div class = "blob-1"></div>
+                    <div class = "blob-2"></div>
+                </div>
+            </div>
+        </div>
+        <div id="bodyContainer" style="display: none">
+            <%- include('header.html') %>
+            <div id="error" class="alert" style="background-color: red;text-align: center;display: none;"></div>
+            <div class="col-sm text-primary h1" style="text-align : center;margin : auto ;padding:10px;padding-top: 30px;width:50%;border: 100px solid ;border-top: 5px;border-bottom: 5px;">
+            <form id="theForm">
+                <!-- <br> -->
+                <div class="form-group">
+                <input class="form-control form-control-lg mr-sm-2" type="text" id="name" name="name" placeholder="Enter Customer Name" style="text-align : center;display : inline-block;margin : auto;padding:60px;width:100%;border: 5px solid ;margin-left: auto;
+                margin-right: auto;">
+                </div>
+                <div class="form-group">
+                <input class="form-control form-control-lg mr-sm-2" type="number" id="contactNumber" name="contactNumber" placeholder="Enter Customer Contact Number" style="text-align : center;display : inline-block;margin : auto;padding:60px;width:100%;border: 5px solid ; margin-left: auto;
+                margin-right: auto;">
+                <small id="numberHelpBlock" class="form-text text-muted" >Number must be 10 digits long</small>
+                </div>
+                <div class="form-inline">
+                <button class="btn btn-primary" type="submit" style="text-align : center;display : inline-block;margin : auto;padding:30px;width:50%;border: 5px solid ;margin-left: auto;
+                margin-right: auto;">Add Customer</button>
+                <button class="btn btn-primary" type="button" id="cancel" style="text-align : center;display : inline-block;margin : auto;padding:30px;width:50%;border: 5px solid ;margin-left: auto;
+                margin-right: auto;">Cancel</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </body>
+</html>

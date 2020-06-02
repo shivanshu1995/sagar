@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+        <link href="/css/cashierPage.css" rel="stylesheet">
+        <script src="/js/cashierPage.js"defer></script>
+    </head>
+    <body>
+        <div id="loadingContainer"class="container">
+            <div class="row text-center">
+                <div class = "centered">
+                    <div class = "blob-1"></div>
+                    <div class = "blob-2"></div>
+                </div>
+            </div>
+        </div>
+        <div id="bodyContainer" style="display: none">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="text-align: center;">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modalBody">
+                        <div id="theForm" class="container-fluid">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <%- include('header.html') %>
+            <div id="error" class="alert" style="background-color: red;text-align: center;display: none;"></div>
+            <br>
+            <div id="transactionsTokensTable" class="container">
+                <div class="row">
+                  <div class="col-sm text-primary h1" style="text-align : center">
+                    Transactions
+                  </div>
+                  <div class="col-sm text-primary h1" style="text-align : center">
+                    Tokens
+                  </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </body>
+
+</html>
+
