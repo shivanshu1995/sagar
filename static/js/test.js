@@ -144,6 +144,7 @@ $(document).ready(() => {
             sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
           }
         }
+        customerData.amount=(sum.toString());
         $('#grandTotal').attr('value',sum);
       });
 
@@ -181,6 +182,7 @@ $(document).ready(() => {
             sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
           }
         }
+        customerData.amount=(sum.toString());
         $('#grandTotal').attr('value',sum);
       });
 
