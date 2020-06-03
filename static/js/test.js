@@ -141,8 +141,7 @@ $(document).ready(() => {
           if(i.slice(0,4)=="numb"){
             var priceId="price_"+i.slice(7);
             var numberId="number_"+i.slice(7);
-            if(copyCustomerData[numberId]<customerData[numberId])
-            sum+=(parseInt(cashierData[priceId])*parseInt(customerData[numberId]));
+            sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
           }
         }
         $('#grandTotal').attr('value',sum);
@@ -179,34 +178,19 @@ $(document).ready(() => {
           if(i.slice(0,4)=="numb"){
             var priceId="price_"+i.slice(7);
             var numberId="number_"+i.slice(7);
-            if(copyCustomerData[numberId]<customerData[numberId])
-            sum+=(parseInt(cashierData[priceId])*parseInt(customerData[numberId]));
+            sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
           }
         }
         $('#grandTotal').attr('value',sum);
       });
 
-      // $("#theForm").submit(function(e){
         $('body').on('click','#submit',(e)=>{
-        // if($('#grandTotal').val()===0){
-        //     $('#error').text('No value Can be zero');
-        //     document.querySelector('.alert').style.display = 'block';
-        //     setTimeout(() => {
-        //       document.querySelector('.alert').style.display = 'none';
-        //     },3000);
-        //     return false;
-        // }
-        // $('#loadingContainer').toggle();
-        // $('#bodyContainer').toggle();
-        // var postData = $(this).serializeArray();
-        console.log("fbhsh");
         for(var i in copyCustomerData){
           if(i.slice(0,4)=="numb"){
             customerData[i]-=copyCustomerData[i];
           }
         }
         var postData = customerData;
-        // postData.push({name: 'name', value: customerNumberData.name},{name: 'contactNumber', value: customerNumberData.contactNumber},{name: 'uid', value: uid});
         var formURL = '/saveToken'
         $.ajax(
         {
@@ -219,13 +203,6 @@ $(document).ready(() => {
             },
             error: function(jqXHR, textStatus, errorThrown) 
             {
-                // $('#loadingContainer').toggle();
-                // $('#bodyContainer').toggle();
-                // $('#error').text('Wrong Data Entry . Check For Negative Values . Try Again !!!!');
-                // document.querySelector('.alert').style.display = 'block';
-                // setTimeout(() => {
-                //   document.querySelector('.alert').style.display = 'none';
-                // },3000);
                 console.log("lag gye");
             }
         });
