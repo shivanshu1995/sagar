@@ -1,8 +1,28 @@
+function addDropdownCategory(data){
+    $('#dropdownCategory').empty();
+    $('#dropdownCategory').append('<option>Add Category</option>');
+    for(var i in data) if(i.slice(0,4)=="cate"){
+        $('#dropdownCategory').append('<option value='+i+'>'+data[i]+'</option>')
+    }
+}
+
+function addDropdownSubCategory(val,data,id){
+    $(id).empty();
+    $(id).append('<option>Add SubCategory</option>');
+  for(var i in data){
+      var a=i.split('_');
+      if(a[0]==="subcategory" && val.slice(9)===a[1]) $(id).append('<option value='+i+'>'+data[i]+'</option>');
+  }
+}
+
 $(document).ready(() => {
 
     $('#serviceDetails').toggle();
-    
+    var addCategoryData={};
+    var cashierData={};
+    var customerData={};
     var uid;
+    var copyCustomerData={};
     var firebaseConfig = {
         apiKey: "AIzaSyCmAkFkoO1D64V2jnD_3rp9zuRVf49F3fM",
         authDomain: "melfire-b4cd5.firebaseapp.com",
@@ -19,8 +39,8 @@ $(document).ready(() => {
         else window.location.replace('/');
       });
 
-    var subcategoryArray=[];
-    var customerNumberData={};
+    // var subcategoryArray=[];
+    // var customerNumberData={};
     $('#getCustomerNameButton').on('click',(e) => {
         e.preventDefault();
         $('#loadingContainer').toggle();
@@ -33,7 +53,9 @@ $(document).ready(() => {
         },
         (data,status) => {
              $('#customerName').text("Customer Name : "+data.name);
-             customerNumberData=data;
+             customerData=data;
+             for(var i in customerData) copyCustomerData[i]=customerData[i];
+            $('#customerName').text("Customer Name : "+data.name);
              $('#getCustomerName').toggle(); 
              $('#serviceDetails').toggle();
              $.post("/getData",
@@ -46,93 +68,165 @@ $(document).ready(() => {
                  Object.keys(unordered).sort().forEach((key) => {
                  ordered[key] = unordered[key];
                  });
-                 data=ordered;
+                 cashierData=ordered;
+                 addCategoryData = {};
+                 for(var i in cashierData) addCategoryData[i]=cashierData[i];
+                 addDropdownCategory(addCategoryData);
+                 $('#theForm').append('<div class="row"><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value="Previous" style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" id="previous" value='+customerData.amount+' style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value="Amount" style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" id="grandTotal" value='+customerData.amount+' style="text-align : center" readonly></div><div class="col"><button id="cancel" type="button">Cancel</button></div><div class="col"><button id="submit" type="submit">Submit</button></div></div><br>');
 
-                 $('#theForm').append('<div class="row"><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value="SubCategory" placeholder="SubCategory" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Price" value="Price" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Previous" value="Previous" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Requested" value="Requested" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total" value="Total" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total Price" value="Total Price" style="text-align : center" readonly></div></div>')
-
-                 for(var i in data){
-                    if(i.slice(0,4)==="cate"){
-                        $('#theForm').append('<div id="'+i+'"><div class="row"><div class="col-sm text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" id="'+i+'" value="'+data[i]+'" placeholder="'+data[i]+'" style="text-align : center" readonly></div></div></div>')
-                    }
-                    else if(i.slice(0,4)==="subc"){
-                        subcategoryArray.push(i);
-                        var priceId="price_"+i.slice(12);
-                        var numberId="number_"+i.slice(12);
-                        var oldId="old_"+i.slice(12);
-                        var totalId="total_"+i.slice(12);
-                        var sumId=i+'_sum';
-                        var sumValue = (parseInt(customerNumberData[numberId])*parseInt(data[priceId]))
-                        $("#category_"+i[12]).append('<div id="'+i+'" class="row"><div class="col-2 text-primary h4" style="text-align : center"><input style="text-align : center" type="text" id="'+i+'" value="'+data[i]+'" placeholder="'+data[i]+'" class="form-control-plaintext mr-sm-2" readonly></div><div class="col-2" style="text-align : center"><input style="text-align : center" type="number" id ="'+priceId+'" value="'+data[priceId]+'" placeholder="'+data[priceId]+'" class="form-control-plaintext mr-sm-2" readonly></div><div class="col-2" style="text-align : center"><input style="text-align : center" type="number" id="'+oldId+'" placeholder="'+customerNumberData[numberId]+'"  value="'+customerNumberData[numberId]+'" class="form-control-plaintext mr-sm-2" readonly></div><div class="col-2" style="text-align : center"><input style="text-align : center" type="number" id="numValue" name="'+numberId+'" placeholder="0"  value="0"></div><div class="col-2" style="text-align : center"><input style="text-align : center" type="number" id="'+totalId+'"  value="'+customerNumberData[numberId]+'" placeholder="'+customerNumberData[numberId]+'" class="form-control-plaintext mr-sm-2" readonly></div><div class="col-2" style="text-align : center"><input style="text-align : center" type="number" id="'+sumId+'" value="'+sumValue+'" placeholder="'+sumValue+'" class="form-control-plaintext mr-sm-2" readonly></div>');
-                    }
-                }
-
-                $('#theForm').append('<br><div class="row"><div class="col-11 text-primary h2" style="text-align : center">Grand Total</div><div class="col-1 text-primary h2" style="text-align : center"><input type="number" id="grandTotal" placeholder="0"  class="form-control-plaintext mr-sm-2" readonly></div></div>');
-                 var grandSum = 0;
-                 for(var j in subcategoryArray){
-                     var id = "#"+subcategoryArray[j]+"_sum";
-                     grandSum+=parseInt($(id).attr('placeholder'));
-                 }
-                 $('#grandTotal').val(grandSum);
-                //  $('#grandTotal').attr("placeholder", grandSum);
-                 $('#theForm').append('<div class="row"><div class="col-9"></div><div><button id="cancel" class="btn btn-primary">Cancel</button></div><div class="col-1"></div><div><button type="submit"class="btn btn-primary">Submit</button></div></div>');
-                 $('#loadingContainer').toggle();
-                 $('#bodyContainer').toggle();
-            }).catch((error) => {
-                $('#error').text('Error in fetching data');
-                document.querySelector('.alert').style.display = 'block';
-                setTimeout(() => {
-                  document.querySelector('.alert').style.display = 'none';
-                },3000);
+                 $('#theForm').append('<div class="row"><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value="SubCategory" placeholder="SubCategory" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Price" value="Price" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Previous" value="Old" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Requested" value="New" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total" value="Total" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total Price" value="Total Price" style="text-align : center" readonly></div></div>');
             });
         }).catch((error) => {
-            $('#loadingContainer').toggle();
-            $('#bodyContainer').toggle();
-            $('#error').text('Given Customer Number is not registered.  Try Again with Correct Number !!!!');
-            document.querySelector('.alert').style.display = 'block';
-            setTimeout(() => {
-              document.querySelector('.alert').style.display = 'none';
-            },3000);
-        });
-            
-        $('body').on("input",'#numValue' ,function(){
-            var v=$(this).parent('div').parent('div').attr('id');
-            console.log(v);
-            var priceId="#price_"+v.slice(12);
-            var oldId="#old_"+v.slice(12);
-            var totalId="#total_"+v.slice(12);
-            var sumId='#'+v+'_sum';
-            var priceVal=parseInt($(priceId).attr('placeholder'));
-            var oldVal=parseInt($(oldId).attr('placeholder'));
-            var numberVal=parseInt($(this).val());
-            var total=oldVal+numberVal;
-            var num = total*priceVal;
-            $(totalId).val(total);
-            $(sumId).val(num);
-            // $(totalId).attr("placeholder", total);
-            // $(sumId).attr("placeholder", num);
-            var grandSum = 0;
-            for(var i in subcategoryArray){
-                var id = "#"+subcategoryArray[i]+"_sum";
-                grandSum+=parseInt($(id).val());
-            }
-            $('#grandTotal').val(grandSum);
-            // $('#grandTotal').attr("placeholder", grandSum);    
-        });
-    });
-
-    $("#theForm").submit(function(e){
-        if($('#grandTotal').val()===0){
-            $('#error').text('No value Can be zero');
-            document.querySelector('.alert').style.display = 'block';
-            setTimeout(() => {
-              document.querySelector('.alert').style.display = 'none';
-            },3000);
-            return false;
-        }
+                    // $('#loadingContainer').toggle();
+                    // $('#bodyContainer').toggle();
+                    $('#error').text('Given Customer Number is not registered.  Try Again with Correct Number !!!!');
+                    document.querySelector('.alert').style.display = 'block';
+                    setTimeout(() => {
+                      document.querySelector('.alert').style.display = 'none';
+                    },3000);
+                });
         $('#loadingContainer').toggle();
         $('#bodyContainer').toggle();
-        var postData = $(this).serializeArray();
-        postData.push({name: 'name', value: customerNumberData.name},{name: 'contactNumber', value: customerNumberData.contactNumber},{name: 'uid', value: uid});
+  });
+
+  $('body').on('change','#dropdownCategory',()=>{
+    var val=$('#dropdownCategory').val();
+    delete addCategoryData[val];
+    addDropdownCategory(addCategoryData);
+    $('#theForm').append('<div id='+val+'><div class="row"><div class="col">'+cashierData[val]+'</div><div class="col"><select id="dropdown_'+val+'" class="dropdownSubCategory"></select></div><div class="col"><button id="remove_'+val+'" class="removeCategory">Remove Category</button></div></div></div>');
+    var id="#dropdown_"+val;
+    addDropdownSubCategory(val,addCategoryData,id);
+  });
+
+  $('body').on('change','.dropdownSubCategory',(e)=>{
+    var id='#'+(e.target.id);
+    var subcat=$(id).val();
+    delete addCategoryData[subcat];
+    var val=$(id).parent('div').parent('div').parent('div').attr('id');
+    addDropdownSubCategory(val,addCategoryData,id);
+    val="#"+val;
+    var priceId="price_"+subcat.slice(12);
+    var pendingId="pending_"+subcat.slice(12);
+    var pending="number_"+subcat.slice(12);
+    var newId="new_"+subcat.slice(12);
+    var totalId="total_"+subcat.slice(12);
+    var totalPriceId = "totalPrice_"+subcat.slice(12);
+    var totalPrice = (parseInt(cashierData[priceId])*parseInt(customerData[pending])).toString();
+    $(val).append('<div id='+subcat+' class="row"><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value='+cashierData[subcat]+' style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" value='+cashierData[priceId]+' style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" id='+pendingId+' value='+customerData[pending]+' style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2 entryNewItem" type="text" id='+pending+' value="0" style="text-align : center" ></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" id='+totalId+' value='+customerData[pending]+' style="text-align : center" readonly></div><div class="col text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2 entryTotalPrice" type="text" id='+totalPriceId+' value='+totalPrice+' style="text-align : center" readonly></div><div class="col"><button id="remove_'+subcat+'" class="removeSubCategory">Remove Subcategory</button></div></div>');
+  });
+
+
+  $('body').on('input','.entryNewItem',(e)=>{
+    var id=(e.target.id);
+    var val=$("#"+id).val();
+    var pending="number_"+id.slice(7);
+    var priceId="price_"+id.slice(7);
+    var price=cashierData[priceId];
+    var totalId="total_"+id.slice(7);
+    var total=(parseInt(val)+parseInt(customerData[pending])).toString();
+    var totalPriceId="totalPrice_"+id.slice(7);
+    var totalPrice=(parseInt(price)*parseInt(total));
+    $("#"+totalId).attr('value',total);
+    $("#"+totalPriceId).attr('value',totalPrice);
+    if(isNaN(parseInt(val))===false){
+      customerData[pending]=total;
+      var temp=(parseInt($('#grandTotal').val())+parseInt(val)*parseInt(cashierData[priceId])).toString();
+      $('#grandTotal').attr('value',temp);
+      customerData.amount=temp;
+    }
+  });
+
+  $('body').on('click','.removeSubCategory',(e)=>{
+    var id=(e.target.id).slice(7);
+    addCategoryData[id]=cashierData[id];
+    var temp={};
+    for(var i in addCategoryData) temp[i]=cashierData[i];
+    var unordered=temp;
+    var ordered = {};
+    Object.keys(unordered).sort().forEach((key) => {
+    ordered[key] = unordered[key];
+    });
+    addCategoryData=ordered;
+    var val=$("#"+id).parent('div').attr('id');
+    $("#"+id).remove();
+    id="#dropdown_"+val;
+    addDropdownSubCategory(val,addCategoryData,id);
+
+    var numberId="number_"+(e.target.id).slice(19);
+    customerData[numberId]=copyCustomerData[numberId];
+    var sum=parseInt(copyCustomerData.amount);
+    for(var i in customerData){
+      if(i.slice(0,4)=="numb"){
+        var priceId="price_"+i.slice(7);
+        var numberId="number_"+i.slice(7);
+        sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
+      }
+    }
+    customerData.amount=(sum.toString());
+    $('#grandTotal').attr('value',sum);
+  });
+
+  $('body').on('click','.removeCategory',(e)=>{
+    e.preventDefault();
+    var id=(e.target.id).slice(7);
+    addCategoryData[id]=cashierData[id];
+    var categoryId=id.split('_');
+    for(var i in cashierData){
+      var a=i.split('_');
+      if(a[0]==="subcategory" && a[1]===categoryId[1]) addCategoryData[i]=cashierData[i];
+    }
+    var temp={};
+    for(var i in addCategoryData) temp[i]=cashierData[i];
+    var unordered=temp;
+    var ordered = {};
+    Object.keys(unordered).sort().forEach((key) => {
+    ordered[key] = unordered[key];
+    });
+    addCategoryData=ordered;
+    addDropdownCategory(addCategoryData);
+    id='#'+id;
+    $(id).remove();
+
+    var id=(e.target.id).slice(16);
+    for(var i in copyCustomerData){
+      if(i.slice(0,4)=="numb"){
+        var a=i.split('_');
+        if(a[1]===id){
+          customerData[i]=copyCustomerData[i];
+        }
+      }
+    }
+    var sum=parseInt(copyCustomerData.amount);
+    for(var i in customerData){
+      if(i.slice(0,4)=="numb"){
+        var priceId="price_"+i.slice(7);
+        var numberId="number_"+i.slice(7);
+        sum+=(parseInt(cashierData[priceId])*(parseInt(customerData[numberId])-parseInt(copyCustomerData[numberId])));
+      }
+    }
+    customerData.amount=(sum.toString());
+    $('#grandTotal').attr('value',sum);
+  });
+
+
+    $('body').on('click','#submit',(e)=>{
+        // if($('#grandTotal').val()===0){
+        //     $('#error').text('No value Can be zero');
+        //     document.querySelector('.alert').style.display = 'block';
+        //     setTimeout(() => {
+        //       document.querySelector('.alert').style.display = 'none';
+        //     },3000);
+        //     return false;
+        // }
+        console.log('ugguug');
+        $('#loadingContainer').toggle();
+        $('#bodyContainer').toggle();
+        for(var i in copyCustomerData){
+            if(i.slice(0,4)=="numb"){
+              customerData[i]-=copyCustomerData[i];
+            }
+          }
+        var postData = customerData;
         var formURL = '/saveToken'
         $.ajax(
         {
@@ -156,9 +250,11 @@ $(document).ready(() => {
         });
         e.preventDefault(); //STOP default action
     });
+
     $('body').on('click','#logout',()=>{
         firebase.auth().signOut();
     });
+
     $('body').on('click','#cancel',()=>{
         window.location.replace('/cashierPage');
     });
