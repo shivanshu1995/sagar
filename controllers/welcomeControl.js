@@ -290,10 +290,9 @@ module.exports = {
       var data = modifyJson(req.body);
       var email = data.email;
       var password = data.password;
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+      firebase.auth().createUser({
+        email: email,
+        password: password
       });
       var query = firestore.collection("adminCashierDetails").doc(data.email);
       query.set(data).then(() => {
