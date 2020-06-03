@@ -152,6 +152,11 @@ $(document).ready(() => {
         e.preventDefault();
         var id=(e.target.id).slice(7);
         addCategoryData[id]=cashierData[id];
+        var categoryId=id.split('_');
+        for(var i in cashierData){
+          var a=i.split('_');
+          if(a[0]==="subcategory" && a[1]===categoryId[1]) addCategoryData[i]=cashierData[i];
+        }
         var temp={};
         for(var i in addCategoryData) temp[i]=cashierData[i];
         var unordered=temp;
