@@ -1,12 +1,13 @@
 <nav id="userEmailNavbar" class="navbar navbar-dark bg-primary sticky-top">
     <p class="navbar-brand mb-0 h1">Laundry Services</p>
     <p class="navbar-brand mb-0 h1" id='userEmail'></p>
+    <a class="navbar-brand mb-0 h1" id="dashBoard" href="/showDashboard" style="display: none">DashBoard</a>
+    <button class="btn btn-primary btn-danger" id="logout">LogOut</button>
 </nav>
 <nav class="navbar navbar-dark bg-primary sticky-top">
     <a class="navbar-brand mb-0 h1" href="/showAddCustomer">Add Customer</a>
     <a class="navbar-brand mb-0 h1" href="/showGenerateToken">Generate Token</a>
     <a class="navbar-brand mb-0 h1" href="/showGenerateBill">Generate Bill</a>
-    <a class="navbar-brand mb-0 h1" id="dashBoard" href="/showDashboard" style="display: none">DashBoard</a>
     <form id="transactionSearch" class="form-inline my-2 my-lg-0" style="display: none">
         <input name="data" class="form-control mr-sm-2" type="search" placeholder="Enter Transaction Number" aria-label="Search">
         <button class="btn btn-info" type="submit">Search</button>
@@ -19,5 +20,5 @@
         <input id="customerNumberSearch" name="data" class="form-control mr-sm-2" type="search" placeholder="Enter Customer Number" aria-label="Search">
         <button class="btn btn-info" type="submit">Search</button>
     </form>
-    <button class="btn btn-primary btn-danger" id="logout">LogOut</button><br><br>
+    <br><br>
 </nav>
