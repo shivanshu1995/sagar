@@ -52,7 +52,7 @@ $('#getCustomerNameButton').on('click',(e) => {
              });
              data=ordered;
 
-             $('#theForm').append('<div class="row"><div class="col-3 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="SubCategory" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Price" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Value" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Requested" style="text-align : center" readonly></div><div class="col-3 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total Price" style="text-align : center" readonly></div></div>')
+             $('#theForm').append('<div class="row"><div class="col-3 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="SubCategory" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Price" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Pending Items" style="text-align : center" readonly></div><div class="col-2 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Take Away" style="text-align : center" readonly></div><div class="col-3 text-primary h2" style="text-align : center"><input class="form-control-plaintext mr-sm-2" type="text" placeholder="Total Price" style="text-align : center" readonly></div></div>')
 
              for(var i in data){
                  if(i.slice(0,4)==="cate"){
@@ -96,7 +96,7 @@ $('#getCustomerNameButton').on('click',(e) => {
              });
              $('#loadingContainer').toggle();
              $('#bodyContainer').toggle();
-             $('#theForm').append('<div class="row"><div class="col-9"></div><div><button id="cancel" class="btn btn-primary">Cancel</button></div><div class="col-1"></div><div><button type="submit"class="btn btn-primary">Submit</button></div></div>');
+             $('#theForm').append('<div class="row"><div class="col-9"></div><div><button id="cancel" type="button" class="btn btn-primary">Cancel</button></div><div class="col-1"></div><div><button type="submit"class="btn btn-primary">Submit</button></div></div>');
              }).catch((error) => {
                 $('#loadingContainer').toggle();
                 $('#bodyContainer').toggle();
@@ -110,7 +110,8 @@ $('#getCustomerNameButton').on('click',(e) => {
                 $('#loadingContainer').toggle();
                 $('#bodyContainer').toggle();
                  var postData = $(this).serializeArray();
-                 postData.push({name: 'name', value: customerNumberData.name},{name: 'contactNumber', value: customerNumberData.contactNumber},{name: 'uid', value: uid});
+                 var grandTotal = $('#grandTotal').val();
+                 postData.push({name: 'name', value: customerNumberData.name},{name: 'contactNumber', value: customerNumberData.contactNumber},{name: 'uid', value: uid},{name: 'amount', value: grandTotal});
                  var formURL = '/saveBill'
                  $.ajax(
                  {

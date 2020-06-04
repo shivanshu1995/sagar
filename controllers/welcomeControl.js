@@ -157,7 +157,6 @@ async function asyncSaveCustomer(uid,number,temp){
 }
 
 async function asyncSaveToken(receivedData,timestamp){
-  console.log(receivedData,timestamp);
   var uid=receivedData.uid;
   var userEmail;
   var category;
@@ -210,7 +209,6 @@ async function asyncSaveToken(receivedData,timestamp){
 
   for (var i in receivedData){var netId="net"+i.slice(6); if(i.slice(0,4)==="numb") receivedData[i]=data[netId];}
   let e=await firestore.collection("cashier").doc(userEmail).collection("customer").doc(receivedData.contactNumber).collection("details").doc("details").set(receivedData).catch((error) => {return Promise.reject();});
-  
   return Promise.resolve();
 
     }catch(error){return Promise.reject()}
@@ -248,6 +246,7 @@ async function asyncSaveBill(receivedCustomerData){
         for(var i in receivedCustomerData) if(i.slice(0,4)==="numb"){ receivedCustomerData[i]=customerData[i]-receivedCustomerData[i]; }
         delete receivedCustomerData.address;
 
+    receivedCustomerData.amount=customerData.amount-receivedCustomerData.amount;
     let e = firestore.collection("cashier").doc(userEmail).collection("customer").doc(receivedCustomerData.contactNumber).collection("details").doc("details").set(receivedCustomerData).catch((error)=>{return Promise.reject()});
 
     return Promise.resolve();
@@ -331,6 +330,7 @@ module.exports = {
 
     saveBill : function(req,res,next){
       var receivedCustomerData=JSON.parse(JSON.stringify(req.body));
+      console.log(receivedCustomerData);
       asyncSaveBill(receivedCustomerData).then(()=>res.status(200).send()).catch(()=>res.status(500).send())
     },
 
