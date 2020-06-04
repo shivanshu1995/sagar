@@ -167,7 +167,7 @@ async function asyncSaveToken(receivedData,timestamp){
     let b=await firestore.collection("adminCashierDetails").doc(userEmail).get().then((doc) => {
         category=doc.data().category;});
     let z=await firestore.collection("cashier").doc(userEmail).collection("customer").doc(receivedData.contactNumber).collection("details").doc("details").get().then((doc) => {
-      if(doc.exists){ customerData=doc.data()}}).catch((error)=>{return Promise.reject()})
+      if(doc.exists){ customerData=doc.data()}}).catch((error)=>{return Promise.reject()});
   
   var data={
     "name" : receivedData.name,

@@ -218,9 +218,10 @@ $(document).ready(() => {
         //     },3000);
         //     return false;
         // }
-        console.log('ugguug');
         $('#loadingContainer').toggle();
         $('#bodyContainer').toggle();
+        var id = "uid";
+        customerData[id]=uid;
         for(var i in copyCustomerData){
             if(i.slice(0,4)=="numb"){
               customerData[i]-=copyCustomerData[i];
